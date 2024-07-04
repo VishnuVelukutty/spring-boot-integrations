@@ -16,7 +16,7 @@ export default function Login() {
         }
 
         try {
-            const userData = await MainService.login(registerDetails)
+            const userData = await MainService.login(registerDetails);
 
             if (userData.token) {
                 localStorage.setItem('token', userData.token)

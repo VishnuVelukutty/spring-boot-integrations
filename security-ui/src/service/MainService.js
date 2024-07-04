@@ -1,8 +1,9 @@
+
 class MainService {
     static BASE_API_URL = "http://localhost:8090";
 
     static async login(details) {
-        console.log("Details >>> "+details )
+        console.log(details )
         try {
             const response = await fetch(`${this.BASE_API_URL}/login`, {
                 method: "POST",
@@ -11,7 +12,9 @@ class MainService {
                     "Content-Type": "application/json",
                 }
             });
-            return response;
+
+            const userData = await response.json(); // Wait for JSON parsing
+            return userData;
         } catch (err) {
 
             console.error("Error during login:", err);

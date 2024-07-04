@@ -24,7 +24,9 @@ public class ReactConnect {
         int status = responseJSON.getInt("status");
 
         if (status == 200) {
+            System.out.println("Success Response sent >>> "+responseJSON.toString());
             return new ResponseEntity<>(responseJSON.toString(), HttpStatus.OK);
+            
         } else {
             return new ResponseEntity<>(responseJSON.toString(), HttpStatus.BAD_REQUEST);
         }

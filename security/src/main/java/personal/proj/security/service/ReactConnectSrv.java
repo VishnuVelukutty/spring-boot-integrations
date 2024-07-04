@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import personal.proj.security.config.SecurityConfigRepo;
 import personal.proj.security.model.MyUser;
 import personal.proj.security.repo.MyUserRepository;
 import personal.proj.security.token.JwtService;
@@ -45,8 +44,6 @@ public class ReactConnectSrv {
 
             String username = requestJSON.getString("userName");
             String password = requestJSON.getString("password");
-
-            System.out.println("UserName :: " + username);
 
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
