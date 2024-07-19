@@ -60,6 +60,21 @@ public class JwtService {
                  .getPayload();
     }
 
+
+
+// to regenerate token after expiration 
+    public String generateRefreshToken(HashMap<String, Object> claims, UserDetails userDetails){
+        return Jwts.builder()
+        .claims(claims)
+        .subject(userDetails.getUsername())
+        .issuedAt(new Date(System.currentTimeMillis()))
+        .expiration(new Date(System.currentTimeMillis() + VALIDITY))
+        .signWith(generateKey() )
+        .compact();
+
+    }
+
+    // checking if token is expired or not 
     public boolean isTokenValid(String jwt) {
         Claims claims = getClaims(jwt);
         return claims.getExpiration().after(Date.from(Instant.now()));

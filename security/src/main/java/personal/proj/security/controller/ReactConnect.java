@@ -46,4 +46,21 @@ public class ReactConnect {
         }
 
     }
+
+    @PostMapping("/token/refresh")
+    public ResponseEntity<?> refreshToken(@RequestBody String requestData) {        
+        JSONObject requestJSON = new JSONObject(requestData);
+        JSONObject responseJSON = reactConnectSrv.registerUser(requestJSON);
+
+
+        int status = responseJSON.getInt("status");
+
+        if (status == 200) {
+            return new ResponseEntity<>(responseJSON.toString(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(responseJSON.toString(), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+    
 }

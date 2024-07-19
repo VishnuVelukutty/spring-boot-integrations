@@ -36,6 +36,29 @@ public class ReactConnectSrv {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    public JSONObject registerUser(JSONObject requestJSON) {
+        JSONObject responseJSON = new JSONObject();
+
+        String username = requestJSON.getString("userName");
+        String password = requestJSON.getString("userPass");
+        String role = requestJSON.getString("userRole");
+
+        try {
+            MyUser myUser = new MyUser();
+            myUser.setUserName(username);
+            myUser.setPassword(passwordEncoder.encode(password));
+            myUser.setRole(role);
+            myUserRepository.save(myUser);
+            responseJSON.put("status", 200);
+        } catch (Exception e) {
+            responseJSON.put("status", 400);
+            responseJSON.put("Error", e);
+        }
+
+        return responseJSON;
+
+    }
+
     public JSONObject login(JSONObject requestJSON) {
 
         JSONObject responseJSON = new JSONObject();
@@ -72,23 +95,32 @@ public class ReactConnectSrv {
 
     }
 
-    public JSONObject registerUser(JSONObject requestJSON) {
+    public JSONObject refreshToken(JSONObject requestJSON) {
         JSONObject responseJSON = new JSONObject();
-
-        String username = requestJSON.getString("userName");
-        String password = requestJSON.getString("userPass");
-        String role = requestJSON.getString("userRole");
-
+        // create a button in frontend to initate refresh token ??
         try {
-            MyUser myUser = new MyUser();
-            myUser.setUserName(username);
-            myUser.setPassword(passwordEncoder.encode(password));
-            myUser.setRole(role);
-            myUserRepository.save(myUser);
-            responseJSON.put("status", 200);
+            String username = requestJSON.getString("userName");
+            String jwtToken = requestJSON.getString("jwtToken");
+
+            // this is just a workaround copied from login
+            // proper implementation to be done
+
+            Optional<MyUser> user = userRepo.findByuserName(username);
+            UserDetails userDetails = myUserDetailService.loadUserByUsername(username);
+
+            // is token valid will check if the token is valid
+            if (user.isPresent() && jwtService.isTokenValid(jwtToken)) {
+                String refreshJwtToken = jwtService.generateToken(userDetails);
+                responseJSON.put("token", refreshJwtToken);
+                responseJSON.put("msg", "Token refreshed");
+            } else {
+                responseJSON.put("status", 401); // Unauthorized status code
+                responseJSON.put("message", "Invalid username");
+            }
+
         } catch (Exception e) {
-            responseJSON.put("status", 400);
-            responseJSON.put("Error", e);
+            responseJSON.put("status", 400); // Unauthorized status code
+            responseJSON.put("message", e);
         }
 
         return responseJSON;
