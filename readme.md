@@ -1,3 +1,4 @@
-- as now role is being sent to the frontend change it to jwt based 
-- there are issues with AuthencationSuccessHandler it doesn't display what is configured to 
-- it uses what is configured in the react app 
+### Demo for Spring Boot and React Integrations 
+1. Spring Security with JWT 
+2. Spring Security with SSO (Keycloak)
+3. Spring and payments
