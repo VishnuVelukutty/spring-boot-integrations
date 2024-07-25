@@ -9,7 +9,6 @@ function Logout() {
         event.preventDefault();
         MainService.logout();
         navigate("/");
-
     }
 
 

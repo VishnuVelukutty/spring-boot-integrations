@@ -44,7 +44,7 @@ public class SecurityConfigRepo {
 					registry.anyRequest().authenticated();
 				})
 
-				/*This is changed from  */
+				/* Session creation policy needs to changed to stateless for connecting to React */
 				.sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authenticationProvider(authenticationProvider()).addFilterBefore(
 						jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

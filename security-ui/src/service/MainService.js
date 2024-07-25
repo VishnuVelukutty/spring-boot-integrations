@@ -2,12 +2,12 @@
 class MainService {
     static BASE_API_URL = "http://localhost:8090";
 
-    static async login(details) {
-        console.log(details )
+    static async login(loginDetails) {
+        console.log(loginDetails )
         try {
             const response = await fetch(`${this.BASE_API_URL}/login`, {
                 method: "POST",
-                body: JSON.stringify(details),
+                body: JSON.stringify(loginDetails),
                 headers: {
                     "Content-Type": "application/json",
                 }
@@ -23,7 +23,22 @@ class MainService {
     }
 
 
-    static async register(){
+    static async register(registerDetails){
+
+        try {
+            const response = await fetch(`${this.BASE_API_URL}/register/user`,{
+                method: "POST",
+                body: JSON.stringify(registerDetails),
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+
+            const userData = await response.json(); // Wait for JSON parsing
+            return userData;
+        } catch (error) {
+            
+        }
 
     }
 

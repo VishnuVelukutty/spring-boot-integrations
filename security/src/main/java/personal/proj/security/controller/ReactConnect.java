@@ -10,6 +10,10 @@ import personal.proj.security.service.ReactConnectSrv;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import io.jsonwebtoken.io.IOException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 @Controller
 public class ReactConnect {
 
@@ -24,9 +28,9 @@ public class ReactConnect {
         int status = responseJSON.getInt("status");
 
         if (status == 200) {
-            System.out.println("Success Response sent >>> "+responseJSON.toString());
+            System.out.println("Success Response sent >>> " + responseJSON.toString());
             return new ResponseEntity<>(responseJSON.toString(), HttpStatus.OK);
-            
+
         } else {
             return new ResponseEntity<>(responseJSON.toString(), HttpStatus.BAD_REQUEST);
         }
@@ -35,6 +39,8 @@ public class ReactConnect {
     @PostMapping("/register/user")
     public ResponseEntity<?> register(@RequestBody String requestData) {
         JSONObject requestJSON = new JSONObject(requestData);
+
+        System.out.println("requestData" + requestData);
         JSONObject responseJSON = reactConnectSrv.registerUser(requestJSON);
 
         int status = responseJSON.getInt("status");
@@ -48,19 +54,22 @@ public class ReactConnect {
     }
 
     @PostMapping("/token/refresh")
-    public ResponseEntity<?> refreshToken(@RequestBody String requestData) {        
-        JSONObject requestJSON = new JSONObject(requestData);
-        JSONObject responseJSON = reactConnectSrv.registerUser(requestJSON);
-
+    public ResponseEntity<?> refreshToken(HttpServletRequest request,
+            HttpServletResponse response) throws java.io.IOException {
+        /*
+         * JSONObject requestJSON = new JSONObject(requestData);
+         */ JSONObject responseJSON = reactConnectSrv.refreshToken(request, response);
 
         int status = responseJSON.getInt("status");
 
         if (status == 200) {
+            System.out.println("refreshJwtToken" + "\n" + responseJSON.toString());
+
             return new ResponseEntity<>(responseJSON.toString(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(responseJSON.toString(), HttpStatus.BAD_REQUEST);
         }
 
     }
-    
+
 }

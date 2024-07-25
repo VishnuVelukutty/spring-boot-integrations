@@ -1,4 +1,4 @@
-package personal.proj.security.model;
+package personal.proj.security.entity;
 
 import java.util.Collection;
 import java.util.List;
@@ -11,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -57,13 +58,13 @@ public class MyUser implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role));
+		return List.of(new SimpleGrantedAuthority(role));
 
 	}
 
 	@Override
 	public String getUsername() {
-return userName;
+		return userName;
 	}
 
 	@Override
@@ -78,12 +79,15 @@ return userName;
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-        return true;
+		return true;
 	}
 
 	@Override
 	public boolean isEnabled() {
 		return true;
 	}
+
+	@OneToMany(mappedBy = "user")
+	private List<Token> tokens;
 
 }

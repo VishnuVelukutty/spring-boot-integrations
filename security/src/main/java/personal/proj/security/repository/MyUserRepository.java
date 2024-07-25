@@ -1,11 +1,11 @@
-package personal.proj.security.repo;
+package personal.proj.security.repository;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import personal.proj.security.model.MyUser;
+import personal.proj.security.entity.MyUser;
 
 @Repository
 public interface MyUserRepository extends JpaRepository<MyUser, Long> {

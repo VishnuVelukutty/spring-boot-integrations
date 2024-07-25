@@ -36,6 +36,8 @@ function App() {
       <Router>
         <Routes>
           <Route path='/' element={<Login />} />
+          <Route path='/register' element={<Register />} />
+
 
           {(MainService.isAuthenticated() && MainService.isUser()) && (
             <>
@@ -46,9 +48,9 @@ function App() {
 
           {(MainService.adminOnly()) && (
 
-            <>
-              <Route path='/admin/home' element={<DisplayOnAdmin />} />
-              <Route path='/register' element={<Register />} />
+            <>              
+            <Route path='/content' element={<DisplayOnLogin />} />
+            <Route path='/admin/home' element={<DisplayOnAdmin />} />
             </>
 
           )}

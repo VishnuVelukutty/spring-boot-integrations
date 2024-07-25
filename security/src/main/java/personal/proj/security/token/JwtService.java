@@ -22,9 +22,10 @@ public class JwtService {
 
     private static final String SECRET = "BB98ED41E7B872C5AB9D884380E560CDD054A49B6761D72C7EB605A00E44818504232993DD92C04BD401CB089DD1977C862AA1725D3D8E92C074F4746DB8E6A2";
 
-    // valid for 10 minutes and after that same user need to generate new token 
-    private static final long VALIDITY = TimeUnit.MINUTES.toMillis(10);
+    // valid for 5 minutes and after that same user need to generate new token 
+    private static final long VALIDITY = TimeUnit.MINUTES.toMillis(5);
     
+    private static final long REFRESH_VALIDITY = TimeUnit.MINUTES.toMillis(10);
 
     public String generateToken(UserDetails userDetails) {
         Map<String, String> claims = new HashMap<>();
@@ -68,17 +69,18 @@ public class JwtService {
         .claims(claims)
         .subject(userDetails.getUsername())
         .issuedAt(new Date(System.currentTimeMillis()))
-        .expiration(new Date(System.currentTimeMillis() + VALIDITY))
+        .expiration(new Date(System.currentTimeMillis() + REFRESH_VALIDITY))
         .signWith(generateKey() )
         .compact();
 
     }
 
-    // checking if token is expired or not 
-    public boolean isTokenValid(String jwt) {
+    // checking if token is valid or not 
+    public boolean isTokenValid(String jwt, UserDetails userDetails) {
+        final String userName = extractUsername(jwt);
         Claims claims = getClaims(jwt);
-        return claims.getExpiration().after(Date.from(Instant.now()));
+        return userName.equals(userDetails.getUsername()) && claims.getExpiration().before(new Date());
     }
-
+    
 
 }

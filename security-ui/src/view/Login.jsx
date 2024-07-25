@@ -10,13 +10,13 @@ export default function Login() {
 
         event.preventDefault();
 
-        let registerDetails = {
+        let loginDetails = {
             "userName": document.getElementById("uname").value,
             "password": document.getElementById("pass").value
         }
 
         try {
-            const userData = await MainService.login(registerDetails);
+            const userData = await MainService.login(loginDetails);
 
             if (userData.token) {
                 localStorage.setItem('token', userData.token)
@@ -37,6 +37,10 @@ export default function Login() {
         }
     }
 
+    const handleRegister = () =>{
+        navigate('/register')
+    }
+
     return (
         <>
             <div>
@@ -45,6 +49,10 @@ export default function Login() {
             </div>
             <div>
                 <button type="submit" onClick={handleLogin}>Login</button>
+            </div>
+
+            <div>
+                <button type="submit" onClick={handleRegister}>Register</button>
             </div>
         </>
     )
