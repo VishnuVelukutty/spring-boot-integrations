@@ -1,3 +1,2 @@
 - as now role is being sent to the frontend change it to jwt based 
-- there are issues with AuthencationSuccessHandler it doesn't display what is configured to 
-- it uses what is configured in the react app 
+- encrpyt jwt token 
