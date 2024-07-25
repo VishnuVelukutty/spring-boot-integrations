@@ -33,6 +33,6 @@ build/
 .vscode/
 
 ### Others ###
-/security/.mvn/
-/security/mvnw
-/security/mvnw.cmd
+security/.mvn/
+security/mvnw
+security/mvnw.cmd
