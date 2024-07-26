@@ -19,16 +19,16 @@ import jakarta.persistence.Table;
 public class MyUser implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private Integer id;
 	private String userName;
 	private String password;
 	private String role;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -61,7 +61,7 @@ public class MyUser implements UserDetails {
 		return List.of(new SimpleGrantedAuthority(role));
 
 	}
-
+// this userDetails implementation 
 	@Override
 	public String getUsername() {
 		return userName;
@@ -88,6 +88,6 @@ public class MyUser implements UserDetails {
 	}
 
 	@OneToMany(mappedBy = "user")
-	private List<Token> tokens;
+	private List<JwtToken> tokens;
 
 }

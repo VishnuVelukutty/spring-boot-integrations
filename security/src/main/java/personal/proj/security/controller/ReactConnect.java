@@ -56,9 +56,7 @@ public class ReactConnect {
     @PostMapping("/token/refresh")
     public ResponseEntity<?> refreshToken(HttpServletRequest request,
             HttpServletResponse response) throws java.io.IOException {
-        /*
-         * JSONObject requestJSON = new JSONObject(requestData);
-         */ JSONObject responseJSON = reactConnectSrv.refreshToken(request, response);
+        JSONObject responseJSON = reactConnectSrv.refreshToken(request, response);
 
         int status = responseJSON.getInt("status");
 

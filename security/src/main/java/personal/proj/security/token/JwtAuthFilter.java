@@ -14,6 +14,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import personal.proj.security.repository.JwtTokenRepository;
 import personal.proj.security.service.MyUserDetailService;
 
 // for ensuring bearer token being passed 
@@ -26,6 +27,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Autowired
     private MyUserDetailService myUserDetailService;
+
+    @Autowired
+    private JwtTokenRepository jwtTokenRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -40,11 +44,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         // get the bearer token
         String jwt = authHeader.substring(7);
+        System.out.println("AUTH HEADER TOKEN >>> "+jwt);
         String username = jwtService.extractUsername(jwt);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = myUserDetailService.loadUserByUsername(username);
-            if (jwtService.isTokenValid(jwt,userDetails)) {
+            var TokenValid = jwtTokenRepository.findBytoken(jwt)
+            .map(t -> !t.isExpired() && !t.isRevoked())
+          .orElse(false);
+            if (jwtService.isTokenValid(jwt,userDetails) && TokenValid) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         username,
                         userDetails.getPassword(),

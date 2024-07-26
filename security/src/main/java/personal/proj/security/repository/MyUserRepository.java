@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import personal.proj.security.entity.MyUser;
 
 @Repository
-public interface MyUserRepository extends JpaRepository<MyUser, Long> {
+public interface MyUserRepository extends JpaRepository<MyUser, Integer> {
 	// to prevent null value 
 	// keep same as model definition
 	Optional<MyUser> findByuserName(String userName);
