@@ -1,0 +1,3 @@
+for login - username and password 
+for accessing - use access tokens
+for refresh - use refresh token 
