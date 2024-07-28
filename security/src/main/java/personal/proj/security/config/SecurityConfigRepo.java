@@ -38,8 +38,8 @@ public class SecurityConfigRepo {
 				.authorizeHttpRequests(registry -> {
 					// this will allow you to register users
 					registry.requestMatchers("/home", "/register/**", "/authenticate", "/login","/token/refresh").permitAll();
-					registry.requestMatchers("/admin/home").hasRole("ADMIN");
-					registry.requestMatchers("/user/home").hasRole("USER");
+					registry.requestMatchers("/admin/home").hasRole(Role.ADMIN.name());
+					registry.requestMatchers("/user/home").hasRole(Role.USER.name());
 					// not allow anything else
 					registry.anyRequest().authenticated();
 				})

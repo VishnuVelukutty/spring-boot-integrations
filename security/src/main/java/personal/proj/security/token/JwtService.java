@@ -1,12 +1,9 @@
 package personal.proj.security.token;
 
-import java.time.Instant;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
 import javax.crypto.SecretKey;
 
 import io.jsonwebtoken.Claims;
@@ -89,7 +86,20 @@ public class JwtService {
     public boolean isTokenValid(String jwt, UserDetails userDetails) {
         final String userName = extractUsername(jwt);
         Claims claims = getClaims(jwt);
-        return userName.equals(userDetails.getUsername()) && claims.getExpiration().before(new Date());
+
+//        System.out.println("Extracted Username: " + userName);
+//        System.out.println("Expected Username: " + userDetails.getUsername());
+//        System.out.println("Token Expiration: " + claims.getExpiration());
+//        System.out.println("Current Date: " + new Date());
+
+        boolean isUsernameValid = userName.equals(userDetails.getUsername());
+        boolean isTokenNotExpired = claims.getExpiration().after(new Date());
+
+//        System.out.println("Is Username Valid: " + isUsernameValid);
+//        System.out.println("Is Token Not Expired: " + isTokenNotExpired);
+
+        return isUsernameValid && isTokenNotExpired;
     }
+
 
 }

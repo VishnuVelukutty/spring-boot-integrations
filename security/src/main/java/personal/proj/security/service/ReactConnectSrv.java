@@ -83,7 +83,7 @@ public class ReactConnectSrv {
         try {
 
             String username = requestJSON.getString("userName");
-            String password = requestJSON.getString("password");
+            String password = requestJSON.getString("userPass");
 
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
@@ -130,7 +130,7 @@ public class ReactConnectSrv {
         final String refreshToken;
         final String userName;
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith("Bearer")) {
             responseJSON.put("status", 403);
         }
 
