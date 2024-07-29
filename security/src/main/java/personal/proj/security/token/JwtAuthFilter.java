@@ -48,9 +48,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = myUserDetailService.loadUserByUsername(username);
+
 			var TokenValid = jwtTokenRepository.findBytoken(jwt).map(t -> !t.isExpired() && !t.isRevoked())
 					.orElse(false);
-			System.out.println("Token valid >>>>" + TokenValid);
+
+					System.out.println("Token valid >>>>" + TokenValid);
 			System.out.println("JWT SERVICE isTokenValid >>> >>> " + jwtService.isTokenValid(jwt, userDetails));
 
 			// error over here jwtService.isTokenValid(jwt,userDetails) is false
