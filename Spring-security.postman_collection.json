@@ -1,0 +1,277 @@
+{
+	"info": {
+		"_postman_id": "c01d2d06-723c-4d37-82ac-11b932c02e2b",
+		"name": "Spring-security",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32483888"
+	},
+	"item": [
+		{
+			"name": "User-register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"user\",\n    \"userPass\": \"user\",\n    \"userRole\": \"USER\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8090/register/user",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"register",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin-register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"vishnu\",\n    \"userPass\": \"vishnu\",\n    \"userRole\": \"ADMIN\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8090/register/user",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"register",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "token-refresh",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGFrcmkiLCJpYXQiOjE3MjE5NzQxOTQsImV4cCI6MTcyMTk3NDE5NH0.9TXxxSDg5DinedZXyke1fo2XNPcpJu197xqKZOv7_Ju1APOS50tKM-b0Uca_zeUZ2CmE5LbBTmXAFp1TlZ7Pgg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8090/token/refresh",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"token",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login-admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"vishnu\",\n    \"userPass\": \"vishnu\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8090/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3N1ZXIiOiJWaXNobnUiLCJzdWIiOiJ2aXNobnUiLCJpYXQiOjE3MjIyNDY0NzcsImV4cCI6MTcyMjI4MjQ3N30.9ykr0UO1cmPO_96G-1Offqcaa3sWDWCp8yjQ6DAby2hiF2E1cAY326cryiT1xw37SL23tzRRu7hE5oTVyxZG4A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8090/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "access-endpoint-admin-admin",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3N1ZXIiOiJWaXNobnUiLCJzdWIiOiJ2aXNobnUiLCJpYXQiOjE3MjIyNDY0NzcsImV4cCI6MTcyMjI4MjQ3N30.9ykr0UO1cmPO_96G-1Offqcaa3sWDWCp8yjQ6DAby2hiF2E1cAY326cryiT1xw37SL23tzRRu7hE5oTVyxZG4A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"vishnu\",\n    \"password\": \"vishnu\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8090/admin/home",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"admin",
+						"home"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "access-endpoint-admin-user",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3N1ZXIiOiJWaXNobnUiLCJzdWIiOiJ1c2VyIiwiaWF0IjoxNzIyMjQ1NTUwLCJleHAiOjE3MjIyODE1NTB9.6gaYmLzwqLAB_i8Xt3US-hUuPYN7oBkP1i9eRBeQvy9D2ZIewyE6XalxXke5A236jSwj6ol0aBrILGffPi1Sqg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"user\",\n    \"password\": \"user\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8090/admin/home",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"admin",
+						"home"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login-user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"chakri\",\n    \"userPass\": \"chakri\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8090/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

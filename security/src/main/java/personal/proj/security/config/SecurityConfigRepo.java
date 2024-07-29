@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +31,9 @@ public class SecurityConfigRepo {
 	@Autowired
 	private JwtAuthFilter jwtAuthFilter;
 
+	@Autowired
+	private LogoutConfig logoutConfig;
+
 	// authorize i.e allow pages
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -48,6 +52,11 @@ public class SecurityConfigRepo {
 				.sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authenticationProvider(authenticationProvider()).addFilterBefore(
 						jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+				.logout(l->l
+                        .logoutUrl("/logout")
+                        .addLogoutHandler(logoutConfig)
+                        .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()
+                        ))
 				.build();
 	}
 

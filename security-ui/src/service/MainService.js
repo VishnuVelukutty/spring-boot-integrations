@@ -3,7 +3,7 @@ class MainService {
     static BASE_API_URL = "http://localhost:8090";
 
     static async login(loginDetails) {
-        console.log(loginDetails )
+        console.log(loginDetails)
         try {
             const response = await fetch(`${this.BASE_API_URL}/login`, {
                 method: "POST",
@@ -23,10 +23,10 @@ class MainService {
     }
 
 
-    static async register(registerDetails){
+    static async register(registerDetails) {
 
         try {
-            const response = await fetch(`${this.BASE_API_URL}/register/user`,{
+            const response = await fetch(`${this.BASE_API_URL}/register/user`, {
                 method: "POST",
                 body: JSON.stringify(registerDetails),
                 headers: {
@@ -37,34 +37,53 @@ class MainService {
             const userData = await response.json(); // Wait for JSON parsing
             return userData;
         } catch (error) {
-            
+
         }
 
     }
 
-    static logout(){
-        localStorage.removeItem('token')
-        localStorage.removeItem('role')
+    static async logout() {
+
+        try {
+            const token = localStorage.getItem('token')
+            const response = await fetch(`${this.BASE_API_URL}/logout`, {
+                method: "POST",
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+
+            })
+
+        }
+        catch (error) {
+            console.error('Logout error:', error);
+        }
+        finally {
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+        }
+
     }
 
 
-    static isAuthenticated(){
+    static isAuthenticated() {
         const token = localStorage.getItem('token')
         return !!token
     }
 
 
-    static isAdmin(){
+    static isAdmin() {
         const role = localStorage.getItem('role')
         return role === 'ADMIN'
     }
 
-    static isUser(){
+    static isUser() {
         const role = localStorage.getItem('role')
         return role === 'USER'
     }
 
-    static adminOnly(){
+    static adminOnly() {
         return this.isAuthenticated() && this.isAdmin();
     }
 

@@ -1,3 +1,6 @@
 for login - username and password 
 for accessing - use access tokens
 for refresh - use refresh token 
+
+For checking api = pass username, password, and accesstoken
+For logoout api = pass accesstoken 
