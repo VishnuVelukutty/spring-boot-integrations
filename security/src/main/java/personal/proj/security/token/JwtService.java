@@ -20,27 +20,25 @@ public class JwtService {
     @Value("${application.security.jwt.secret-key}")
     private String SECRET;
 
-    @Value("${application.security.jwt.expiration}")
+   /*  @Value("${application.security.jwt.expiration}")
     private long jwtExpiration;
 
     @Value("${application.security.jwt.refresh-token.expiration}")
-    private long refreshTokenExpiration;
+    private long refreshTokenExpiration; */
 
-
-    // valid for 10 minutes and after that same user need to generate new token
+    // valid for a day and after that same user need to generate new token
     // private long VALIDITY = TimeUnit.MINUTES.toMillis(jwtExpiration);
     private long VALIDITY = 36000000;
 
-    
-
     // valid for a week
-    // private long REFRESH_VALIDITY = TimeUnit.MINUTES.toMillis(refreshTokenExpiration);
+    // private long REFRESH_VALIDITY =
+    // TimeUnit.MINUTES.toMillis(refreshTokenExpiration);
     private long REFRESH_VALIDITY = 36000000;
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("issuer", "Vishnu");
-        System.out.println("Access token >>> "+VALIDITY);
+        System.out.println("Access token >>> " + VALIDITY);
         return tokenBuilder(claims, userDetails, VALIDITY);
     }
 
@@ -65,9 +63,6 @@ public class JwtService {
 
     // to regenerate token after expiration
     public String generateRefreshToken(UserDetails userDetails) {
-        System.out.println("Validity >>> >>> "+SECRET);
-
-        System.out.println("Validity >>> >>> "+REFRESH_VALIDITY);
         return tokenBuilder(new HashMap<>(), userDetails, REFRESH_VALIDITY);
     }
 
@@ -86,20 +81,9 @@ public class JwtService {
     public boolean isTokenValid(String jwt, UserDetails userDetails) {
         final String userName = extractUsername(jwt);
         Claims claims = getClaims(jwt);
-
-//        System.out.println("Extracted Username: " + userName);
-//        System.out.println("Expected Username: " + userDetails.getUsername());
-//        System.out.println("Token Expiration: " + claims.getExpiration());
-//        System.out.println("Current Date: " + new Date());
-
         boolean isUsernameValid = userName.equals(userDetails.getUsername());
         boolean isTokenNotExpired = claims.getExpiration().after(new Date());
-
-//        System.out.println("Is Username Valid: " + isUsernameValid);
-//        System.out.println("Is Token Not Expired: " + isTokenNotExpired);
-
         return isUsernameValid && isTokenNotExpired;
     }
-
 
 }

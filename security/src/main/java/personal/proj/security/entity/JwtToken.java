@@ -23,15 +23,6 @@ public class JwtToken {
     private String token;
     private boolean revoked;
     private boolean expired;
-/*     private boolean loggedOut;
-
-    public boolean isLoggedOut() {
-        return loggedOut;
-    }
-
-    public void setLoggedOut(boolean loggedOut) {
-        this.loggedOut = loggedOut;
-    } */
 
     public TokenType getTokenType() {
         return tokenType;
