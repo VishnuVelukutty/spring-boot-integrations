@@ -1,0 +1,99 @@
+# You can override the included template(s) by including variable overrides
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
+# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
+# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
+image: maven:latest
+stages:
+  - Building
+  - Testing
+  - Staging
+
+#build_job:
+#  stage: Building
+#  script:
+#    - echo "Started BUILD"
+#    - mvn compile
+
+#test_job:
+#  stage: Testing
+#  script:
+#    - echo "Started TESTS"
+#    - mvn test
+
+#cache:
+#  key: ${CI_COMMIT_REF_SLUG}-$CI_PROJECT_DIR
+#  paths:
+#   - node_modules/
+
+
+.before_script_template: # https://stackoverflow.com/a/54077634
+  before_script:
+    ##
+    ## Install ssh-agent if not already installed, it is required by Docker.
+    ## (change apt-get to yum if you use an RPM-based image)
+    ##
+    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    #- 'cat /etc/issue'
+    #- 'which ssh'
+    #- 'command -v rsync'
+    #- 'command -v rsync >/dev/null || ( apt update -y && apt install rsync -y )'
+    #- 'command -v rsync'
+
+
+
+    ##
+    ## Run ssh-agent (inside the build environment)
+    ##
+    - eval $(ssh-agent -s)
+
+    ## 
+    ## SSH_PRIVATE_KEY as a variable
+    ##
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+
+    ##
+    ## Create the SSH directory and give it the right permissions
+    ##
+    #- pwd
+    #- whoami
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+
+    ## Use ssh-keyscan to scan the keys of your private server.
+    ## Repeat that command if you have more than one server to connect to.
+    ##
+    - echo $STAGING_BACK
+  
+    - ssh-keyscan -v $STAGING_BACK
+    - ssh-keyscan "$STAGING_BACK" >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  
+
+staging-job:
+  extends: .before_script_template
+
+  stage: Staging
+
+  variables:
+    SERVER_FOLDER : "courses"
+  environment:
+    name: staging
+    url: $STAGING_BACK/courses
+  script:
+  
+  #  - CI=false npm run build # no ideal to falsify CI, but a temporary fix till code is fixed
+    - echo "Deploying started..."
+    - mvn clean install  # this defaults to 'remote' profile in spring-cloud-config server
+    #- mvn clean install -Dspring.profiles.active=stagedb this does not work. Has to be done runtime in java -jar
+    #- ls target
+    #- command -v rsync
+    #- /usr/bin/rsync --recursive --delete target/*.jar deployer@${STAGING_BACK}:${SERVER_FOLDER}
+    #- ssh deployer@$STAGING_BACK "sudo systemctl stop courses"
+    - scp target/*.jar deployer@${STAGING_BACK}:${SERVER_FOLDER}
+    - ssh deployer@$STAGING_BACK "sudo systemctl restart courses"
+    # - mvn --version
+    - echo "Finished deploying the app."
+

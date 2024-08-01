@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-HttpBasicApplication<httpBasic>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "security.auth.httpBasic.HttpBasicApplication",
+            "projectName": "httpBasic",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
